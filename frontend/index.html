@@ -8,6 +8,52 @@
     <title>Controle de estoque</title>
 </head>
 <body>
-    
-</body>
+    <div class="container">
+        <form id="form-produto">
+            <label for="descricao">Descrição:</label>
+            <input type="text" name="descricao" id="descricao" placeholder="Ex: Rolamento">
+
+            <label for="codigo">Código SAP:</label>
+            <input type="text" name="codigo" id="codigo" placeholder="Ex: 40013891">
+
+            <label for="quantidade">Quantidade:</label>
+            <input type="number" name="quantidade" id="quantidade" placeholder="Ex: 3">
+            
+            <label for="quantidade_minima">Quantidade miníma:</label>
+            <input type="number" name="quantidade_minima" id="quantidade_minima" placeholder="Ex: 2">
+            
+            <label for="posicao">Posição:</label>
+            <input type="text" name="posicao" id="posicao" placeholder="Ex: A-306">
+
+            <label for="fabricante">Fabricante:</label>
+            <input type="text" name="fabricante" id="fabricante" placeholder="Ex: NSK">
+
+            <label for="referencia">Referência:</label>
+            <input type="text" name="referencia" id="referencia" placeholder="Ex: 6005zz">
+
+            <button id="btn-produto">Cadastrar produto</button>
+
+        </form>
+
+        <h2>Produtos em Estoque</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Descrição</th>
+            <th>Cód. SAP</th>
+            <th>Qtd.</th>
+            <th>Qtd. Mín</th>
+            <th>Posição</th>
+            <th>Fabricante</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="tabela-produtos">
+        
+        </tbody>
+      </table>
+    </div>
+<body>
+
 </html>
