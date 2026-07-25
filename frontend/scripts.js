@@ -56,7 +56,7 @@ function renderizarTabela(lista) {
         <td>${produto.id}</td>
         <td>${produto.descricao}</td>
         <td>${produto.codigo || '-'}</td>
-        <td>${produto.quantidade}${estoqueCritico ? ' ⚠️' : ''}</td>
+        <td>${produto.quantidade}${estoqueCritico ? ' <i class="fa-solid fa-triangle-exclamation"></i>' : ''}</td>
         <td>${produto.quantidade_minima}</td>
         <td>${produto.posicao || '-'}</td>
         <td>${produto.fabricante || '-'}</td>
