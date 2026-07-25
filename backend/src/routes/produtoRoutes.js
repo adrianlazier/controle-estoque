@@ -2,6 +2,33 @@ const express = require('express');
 const router = express.Router();
 const db = require('../config/db');
 
+function validarProduto(body) {
+  const erros = [];
+  const { descricao, quantidade, quantidade_minima } = body;
+
+  if (!descricao || descricao.trim() === '') {
+    erros.push("O campo 'descricao' é obrigatório");
+  }
+
+  if (
+    quantidade !== undefined &&
+    (isNaN(quantidade) || Number(quantidade) < 0)
+  ) {
+    erros.push("'quantidade' deve ser um número igual ou maior que zero");
+  }
+
+  if (
+    quantidade_minima !== undefined &&
+    (isNaN(quantidade_minima) || Number(quantidade_minima) < 0)
+  ) {
+    erros.push(
+      "'quantidade_minima' deve ser um número igual ou maior que zero"
+    );
+  }
+
+  return erros;
+}
+
 // listar produto
 
 router.get('/', async (req, res) => {
@@ -29,9 +56,9 @@ router.post('/', async (req, res) => {
     fabricante,
     referencia,
   } = req.body;
-
-  if (!descricao) {
-    return res.status(400).json({ erro: "O campo 'descricao' é obrigatório" });
+  const erros = validarProduto(req.body);
+  if (erros.length > 0) {
+    return res.status(400).json({ erro: erros.join(', ') });
   }
 
   try {
@@ -70,6 +97,20 @@ router.post('/', async (req, res) => {
   }
 });
 
+// Alerta de estoque baixo
+
+router.get('/alertas/estoque-baixo', async (req, res) => {
+  try {
+    const [produtos] = await db.execute(
+      'SELECT id, descricao, codigo, quantidade, quantidade_minima, posicao FROM produto WHERE quantidade <= quantidade_minima'
+    );
+    return res.status(200).json(produtos);
+  } catch (error) {
+    console.error('Erro ao buscar alertas', error.message);
+    return res.status(500).json({ erro: 'Erro interno ao buscar alertas' });
+  }
+});
+
 //Buscar produto pelo ID
 
 router.get('/:id', async (req, res) => {
@@ -96,6 +137,10 @@ router.get('/:id', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
+  const erros = validarProduto(req.body);
+  if (erros.length > 0) {
+    return res.status(400).json({ erro: erros.join(', ') });
+  }
   const {
     descricao,
     codigo,
@@ -105,11 +150,6 @@ router.put('/:id', async (req, res) => {
     fabricante,
     referencia,
   } = req.body;
-
-  if (!descricao) {
-    return res.status(400).json({ erro: "O campo 'descricao' é obrigatório." });
-  }
-
   try {
     const query = `UPDATE produto 
       SET descricao = ?, codigo = ?, quantidade = ?, quantidade_minima = ?, posicao = ?, fabricante = ?, referencia = ?

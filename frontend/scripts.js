@@ -8,37 +8,86 @@ const formEdicao = document.getElementById('form-editar-produto');
 const btnFecharModal = document.getElementById('btn-fechar-modal');
 const btnCancelarModal = document.getElementById('btn-cancelar-modal');
 
+const statusMsg = document.getElementById('status-msg');
+
+
+function mostrarStatus(texto, tipo) {
+  statusMsg.textContent = texto;
+  statusMsg.className = `status-msg ${tipo}`;
+  statusMsg.style.display = 'block';
+}
+
+function esconderStatus() {
+  statusMsg.style.display = 'none';
+}
+
+let produtosCache = [];
+
 async function carregarProdutos() {
+  mostrarStatus("Carregando produtos...", "loading");
     try {
         const resposta = await fetch(URL);
         const produtos = await resposta.json();
 
-        tabela.innerHTML = '';
-
-        produtos.forEach(produto => {
-            const tr = document.createElement("tr");
-
-            tr.innerHTML = `
-            <td>${produto.id}</td>
-            <td>${produto.descricao}</td>
-            <td>${produto.codigo || '-'}</td>
-            <td>${produto.quantidade}</td>
-            <td>${produto.quantidade_minima}</td>
-            <td>${produto.posicao || '-'}</td>
-            <td>${produto.fabricante || '-'}</td>
-            <td>${produto.referencia}</td>
-            <td class ="acoes">
-                <button class="btn-acao btn-editar" onclick="abrirModalEdicao(${produto.id})">Editar</button>
-                <button class="btn-acao btn-deletar" onclick="deletarProduto(${produto.id})">Excluir</button>
-            </td>
-            `;
-            tabela.appendChild(tr);
-        });
+        produtosCache = produtos;
+        renderizarTabela(produtos);
+        esconderStatus();
 
     } catch (error) {
         console.error("Erro ao carregar produtos:", error);
+        mostrarStatus('Erro ao carregar produtos. Verifique a conexão com o servidor.', 'erro');
     }
 }
+
+function renderizarTabela(lista) {
+    tabela.innerHTML = '';
+
+    if (lista.length === 0) {
+        tabela.innerHTML = `<tr><td colspan="9" class="tabela-vazia">Nenhum produto encontrado.</td></tr>`;
+        return;
+    }
+
+    lista.forEach(produto => {
+        const tr = document.createElement("tr");
+        const estoqueCritico = produto.quantidade <= produto.quantidade_minima;
+        if (estoqueCritico) tr.classList.add("estoque-baixo");
+
+        tr.innerHTML = `
+        <td>${produto.id}</td>
+        <td>${produto.descricao}</td>
+        <td>${produto.codigo || '-'}</td>
+        <td>${produto.quantidade}${estoqueCritico ? ' ⚠️' : ''}</td>
+        <td>${produto.quantidade_minima}</td>
+        <td>${produto.posicao || '-'}</td>
+        <td>${produto.fabricante || '-'}</td>
+        <td>${produto.referencia}</td>
+        <td class="acoes">
+            <button class="btn-acao btn-editar" onclick="abrirModalEdicao(${produto.id})">Editar</button>
+            <button class="btn-acao btn-deletar" onclick="deletarProduto(${produto.id})">Excluir</button>
+        </td>
+        `;
+        tabela.appendChild(tr);
+    });
+}
+
+const inputBusca = document.getElementById('busca');
+
+inputBusca.addEventListener('input', (e) => {
+    const termo = e.target.value.toLowerCase().trim();
+
+    if (termo === '') {
+        renderizarTabela(produtosCache);
+        return;
+    }
+
+    const filtrados = produtosCache.filter(produto =>
+        String(produto.descricao || '').toLowerCase().includes(termo) ||
+        String(produto.codigo || '').toLowerCase().includes(termo) ||
+        String(produto.posicao || '').toLowerCase().includes(termo)
+    );
+
+    renderizarTabela(filtrados);
+});
 
 form.addEventListener("submit",async (e) => {
     e.preventDefault();
@@ -163,5 +212,6 @@ async function deletarProduto(id) {
     }
   }
 }
+
 
 carregarProdutos()
