@@ -118,6 +118,10 @@ body {
   transform: translateY(0);
 }
 
+.obrigatorio {
+  color: red;
+}
+
 /* ==========================================================================
    3. SEÇÃO DA TABELA
    ========================================================================== */
@@ -430,4 +434,48 @@ tbody tr.estoque-baixo td {
   color: var(--text-muted);
   padding: 2rem 1rem !important;
   font-style: italic;
+}
+
+/* ==========================================================================
+   6. BOTÕES DE MOVIMENTAÇÃO DE ESTOQUE (ENTRADA/SAÍDA)
+   ========================================================================== */
+.acoes-movimentacao {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.btn-mov {
+  flex: 1;
+  padding: 0.35rem 0;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
+  line-height: 1;
+}
+
+.btn-entrada {
+  background-color: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
+}
+
+.btn-entrada:hover {
+  background-color: #16a34a;
+  color: #ffffff;
+  border-color: #16a34a;
+}
+
+.btn-saida {
+  background-color: #fff7ed;
+  color: #ea580c;
+  border: 1px solid #fed7aa;
+}
+
+.btn-saida:hover {
+  background-color: #ea580c;
+  color: #ffffff;
+  border-color: #ea580c;
 }

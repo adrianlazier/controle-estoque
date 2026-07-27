@@ -21,6 +21,17 @@ function esconderStatus() {
   statusMsg.style.display = 'none';
 }
 
+// Previne XSS: converte caracteres especiais em entidades HTML seguras
+function escapeHTML(valor) {
+    if (valor === null || valor === undefined) return '';
+    return String(valor)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
 let produtosCache = [];
 
 async function carregarProdutos() {
@@ -53,15 +64,19 @@ function renderizarTabela(lista) {
         if (estoqueCritico) tr.classList.add("estoque-baixo");
 
         tr.innerHTML = `
-        <td>${produto.id}</td>
-        <td>${produto.descricao}</td>
-        <td>${produto.codigo || '-'}</td>
-        <td>${produto.quantidade}${estoqueCritico ? ' <i class="fa-solid fa-triangle-exclamation"></i>' : ''}</td>
-        <td>${produto.quantidade_minima}</td>
-        <td>${produto.posicao || '-'}</td>
-        <td>${produto.fabricante || '-'}</td>
-        <td>${produto.referencia}</td>
+        <td>${escapeHTML(produto.id)}</td>
+        <td>${escapeHTML(produto.descricao)}</td>
+        <td>${escapeHTML(produto.codigo) || '-'}</td>
+        <td>${escapeHTML(produto.quantidade)}${estoqueCritico ? ' <i class="fa-solid fa-triangle-exclamation"></i>' : ''}</td>
+        <td>${escapeHTML(produto.quantidade_minima)}</td>
+        <td>${escapeHTML(produto.posicao) || '-'}</td>
+        <td>${escapeHTML(produto.fabricante) || '-'}</td>
+        <td>${escapeHTML(produto.referencia) || '-'}</td>
         <td class="acoes">
+            <div class="acoes-movimentacao">
+                <button class="btn-mov btn-entrada" onclick="movimentarProduto(${produto.id}, 'entrada')" title="Entrada de estoque">+</button>
+                <button class="btn-mov btn-saida" onclick="movimentarProduto(${produto.id}, 'saida')" title="Saída de estoque">−</button>
+            </div>
             <button class="btn-acao btn-editar" onclick="abrirModalEdicao(${produto.id})">Editar</button>
             <button class="btn-acao btn-deletar" onclick="deletarProduto(${produto.id})">Excluir</button>
         </td>
@@ -194,6 +209,37 @@ window.addEventListener('click', (e) => {
     fecharModal();
   }
 });
+
+async function movimentarProduto(id, tipo) {
+  const acao = tipo === 'entrada' ? 'adicionar' : 'retirar';
+  const quantidade = prompt(`Quantidade a ${acao}:`);
+
+  if (quantidade === null) return; // usuário cancelou
+
+  const valor = Number(quantidade);
+  if (isNaN(valor) || valor <= 0) {
+    alert('Informe um número válido maior que zero.');
+    return;
+  }
+
+  try {
+    const resposta = await fetch(`${URL}/${id}/movimentar`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tipo, quantidade: valor })
+    });
+
+    if (resposta.ok) {
+      carregarProdutos();
+    } else {
+      const erro = await resposta.json();
+      alert(`Erro: ${erro.erro}`);
+    }
+  } catch (error) {
+    console.error('Erro ao movimentar estoque:', error);
+    alert('Erro ao conectar com o servidor.');
+  }
+}
 
 async function deletarProduto(id) {
   if (confirm('Tem certeza que deseja excluir este produto?')) {
