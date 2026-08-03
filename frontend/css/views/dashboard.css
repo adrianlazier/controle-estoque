@@ -1,0 +1,163 @@
+.dashboard-header h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+.dashboard-subtitulo {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
+}
+
+/* Barra de saúde do estoque */
+.saude-estoque {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+}
+
+.saude-estoque-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.85rem;
+}
+.saude-estoque-topo span:first-child {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+.saude-estoque-topo span:last-child {
+  font-weight: 700;
+  color: var(--primary);
+  font-size: 0.95rem;
+}
+
+.saude-barra {
+  display: flex;
+  height: 14px;
+  width: 100%;
+  border-radius: 999px;
+  overflow: hidden;
+  background-color: var(--border-color);
+}
+.saude-segmento {
+  height: 100%;
+  transition: width 0.4s ease-in-out;
+}
+.saude-ok { background-color: var(--success); }
+.saude-baixo { background-color: var(--danger); }
+
+.saude-legenda {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 0.85rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+.legenda-cor {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  margin-right: 0.4rem;
+}
+.legenda-ok { background-color: var(--success); }
+.legenda-baixo { background-color: var(--danger); }
+
+/* Cards de insight */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.card-insight {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.card-icone {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.card-icone svg { width: 22px; height: 22px; }
+
+.icone-azul { background-color: var(--primary-light); color: var(--primary); }
+.icone-vermelho { background-color: var(--danger-bg); color: var(--danger); }
+.icone-verde { background-color: var(--success-bg); color: var(--success); }
+
+.card-numero {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.2;
+}
+.card-label {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* Lista de itens em atenção */
+.alerta-lista {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+}
+
+.alerta-lista-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.alerta-lista-header h2 {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.alerta-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+.alerta-item:last-child { border-bottom: none; }
+
+.alerta-item-info { display: flex; flex-direction: column; gap: 0.15rem; }
+.alerta-item-descricao { font-weight: 600; font-size: 0.9rem; }
+.alerta-item-posicao { font-size: 0.78rem; color: var(--text-muted); }
+.alerta-item-quantidade {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--danger);
+  background: var(--danger-bg);
+  border: 1px solid var(--danger-border);
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.alerta-vazio {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-style: italic;
+  padding: 0.5rem 0;
+}

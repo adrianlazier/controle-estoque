@@ -1,0 +1,98 @@
+.sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  background-color: var(--sidebar-bg);
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 1rem;
+  gap: 2rem;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0 0.5rem;
+}
+
+.logo-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.logo-badge img {
+  width: 26px;
+  height: 26px;
+}
+
+.logo-texto {
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.logo-texto strong {
+  color: #93c5fd;
+  font-weight: 700;
+}
+
+.sidebar-nav {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 8px;
+  color: var(--sidebar-text);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.sidebar-link i {
+  width: 18px;
+  font-size: 1rem;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.sidebar-link:hover {
+  color: var(--sidebar-text-hover);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* Página atual: adicionada manualmente no HTML de cada página (sem JS) */
+.sidebar-link.ativo {
+  color: #fff;
+  background: var(--sidebar-active-bg);
+}
+
+@media (max-width: 860px) {
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    overflow-x: auto;
+    padding: 0.75rem 1rem;
+    gap: 1rem;
+  }
+  .sidebar-header {
+    display: none;
+  }
+  .sidebar-nav {
+    flex-direction: row;
+  }
+}

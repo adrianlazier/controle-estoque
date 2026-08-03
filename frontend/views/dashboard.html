@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — Controle de Estoque</title>
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/sidebar.css">
+    <link rel="stylesheet" href="../css/componentes.css">
+    <link rel="stylesheet" href="../css/views/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+    <div class="layout">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-badge">
+                    <img src="../assets/img/grupo-boticario.svg" alt="Logotipo Grupo Boticário">
+                </div>
+                <span class="logo-texto">Manutenção<strong>CGS</strong></span>
+            </div>
+
+            <ul class="sidebar-nav">
+                <li>
+                    <a href="dashboard.html" class="sidebar-link ativo">
+                        <i class="fa-solid fa-gauge"></i>
+                        Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="estoque.html" class="sidebar-link">
+                        <i class="fa-solid fa-boxes-stacked"></i>
+                        Estoque
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="conteudo">
+            <div id="app-status" class="status-msg" style="display:none;"></div>
+
+            <div class="dashboard">
+                <header class="dashboard-header">
+                    <h1>Dashboard</h1>
+                    <p class="dashboard-subtitulo">Visão geral do estoque de peças</p>
+                </header>
+
+                <section class="saude-estoque">
+                    <div class="saude-estoque-topo">
+                        <span>Saúde do estoque</span>
+                        <span id="saude-estoque-percentual">--</span>
+                    </div>
+                    <div class="saude-barra">
+                        <div id="saude-barra-ok" class="saude-segmento saude-ok" style="width: 0%"></div>
+                        <div id="saude-barra-baixo" class="saude-segmento saude-baixo" style="width: 0%"></div>
+                    </div>
+                    <div class="saude-legenda">
+                        <span><i class="legenda-cor legenda-ok"></i> Dentro do mínimo</span>
+                        <span><i class="legenda-cor legenda-baixo"></i> Abaixo do mínimo</span>
+                    </div>
+                </section>
+
+                <section class="cards-grid">
+                    <div class="card-insight">
+                        <div class="card-icone icone-azul">
+                            <i class="fa-solid fa-boxes-stacked"></i>
+                        </div>
+                        <div>
+                            <span class="card-numero" id="total-itens">--</span>
+                            <span class="card-label">Itens cadastrados</span>
+                        </div>
+                    </div>
+
+                    <div class="card-insight">
+                        <div class="card-icone icone-vermelho">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        </div>
+                        <div>
+                            <span class="card-numero" id="total-abaixo-minimo">--</span>
+                            <span class="card-label">Abaixo do mínimo</span>
+                        </div>
+                    </div>
+
+                    <div class="card-insight">
+                        <div class="card-icone icone-verde">
+                            <i class="fa-solid fa-layer-group"></i>
+                        </div>
+                        <div>
+                            <span class="card-numero" id="total-pecas-estoque">--</span>
+                            <span class="card-label">Peças em estoque (unidades)</span>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="alerta-lista">
+                    <div class="alerta-lista-header">
+                        <h2>Itens que precisam de atenção</h2>
+                        <a href="estoque.html" class="link-ver-todos">Ver estoque completo →</a>
+                    </div>
+                    <div id="alerta-lista-corpo">
+                        <p class="carregando-view">Carregando...</p>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/dashboard.js"></script>
+</body>
+</html>

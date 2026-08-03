@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estoque — Controle de Estoque</title>
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/sidebar.css">
+    <link rel="stylesheet" href="../css/componentes.css">
+    <link rel="stylesheet" href="../css/views/estoque.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+    <div class="layout">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-badge">
+                    <img src="../assets/img/grupo-boticario.svg" alt="Logotipo Grupo Boticário">
+                </div>
+                <span class="logo-texto">Manutenção<strong>CGS</strong></span>
+            </div>
+
+            <ul class="sidebar-nav">
+                <li>
+                    <a href="dashboard.html" class="sidebar-link">
+                        <i class="fa-solid fa-gauge"></i>
+                        Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="estoque.html" class="sidebar-link ativo">
+                        <i class="fa-solid fa-boxes-stacked"></i>
+                        Estoque
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="conteudo">
+            <div id="app-status" class="status-msg" style="display:none;"></div>
+
+            <div class="estoque">
+                <header class="estoque-header">
+                    <h1>Estoque</h1>
+                    <p class="dashboard-subtitulo">Cadastro e controle de peças</p>
+                </header>
+
+                <form id="form-produto">
+                    <div class="form-group">
+                        <label for="descricao">Descrição:</label>
+                        <input type="text" name="descricao" id="descricao" placeholder="Ex: Rolamento">
+                    </div>
+                    <div class="form-group">
+                        <label for="codigo">Código SAP:</label>
+                        <input type="text" name="codigo" id="codigo" placeholder="Ex: 40013891">
+                    </div>
+                    <div class="form-group">
+                        <label for="quantidade">Quantidade:</label>
+                        <input type="number" name="quantidade" id="quantidade" placeholder="Ex: 3">
+                    </div>
+                    <div class="form-group">
+                        <label for="quantidade_minima">Quantidade mínima:</label>
+                        <input type="number" name="quantidade_minima" id="quantidade_minima" placeholder="Ex: 2">
+                    </div>
+                    <div class="form-group">
+                        <label for="posicao">Posição:</label>
+                        <input type="text" name="posicao" id="posicao" placeholder="Ex: A-306">
+                    </div>
+                    <div class="form-group">
+                        <label for="fabricante">Fabricante:</label>
+                        <input type="text" name="fabricante" id="fabricante" placeholder="Ex: NSK">
+                    </div>
+                    <div class="form-group">
+                        <label for="referencia">Referência:</label>
+                        <input type="text" name="referencia" id="referencia" placeholder="Ex: 6005zz">
+                    </div>
+                    <button type="submit" id="btn-produto" class="btn-primario">Cadastrar produto</button>
+                </form>
+
+                <div class="estoque-tabela-header">
+                    <h2>Produtos em Estoque</h2>
+                    <input type="text" id="busca" placeholder="Buscar por descrição, código ou posição...">
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Descrição</th>
+                                <th>Cód. SAP</th>
+                                <th>Qtd.</th>
+                                <th>Qtd. Mín</th>
+                                <th>Posição</th>
+                                <th>Fabricante</th>
+                                <th>Referência</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabela-produtos"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-edicao" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Editar Produto</h2>
+                <button id="btn-fechar-modal" class="btn-fechar">&times;</button>
+            </div>
+            <form id="form-editar-produto">
+                <input type="hidden" id="edit-id">
+                <div class="form-group">
+                    <label for="edit-descricao">Descrição:</label>
+                    <input type="text" id="edit-descricao" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-codigo">Código SAP:</label>
+                    <input type="text" id="edit-codigo">
+                </div>
+                <div class="form-group">
+                    <label for="edit-quantidade">Quantidade:</label>
+                    <input type="number" id="edit-quantidade">
+                </div>
+                <div class="form-group">
+                    <label for="edit-quantidade_minima">Quantidade mínima:</label>
+                    <input type="number" id="edit-quantidade_minima">
+                </div>
+                <div class="form-group">
+                    <label for="edit-posicao">Posição:</label>
+                    <input type="text" id="edit-posicao">
+                </div>
+                <div class="form-group">
+                    <label for="edit-fabricante">Fabricante:</label>
+                    <input type="text" id="edit-fabricante">
+                </div>
+                <div class="form-group">
+                    <label for="edit-referencia">Referência:</label>
+                    <input type="text" id="edit-referencia">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-acao btn-deletar" id="btn-cancelar-modal">Cancelar</button>
+                    <button type="submit" class="btn-acao btn-editar">Salvar Alterações</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/estoque.js"></script>
+</body>
+</html>
