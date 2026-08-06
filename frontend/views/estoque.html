@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estoque — Controle de Estoque</title>
+    <title>Estoque — Manutenção CGS</title>
     <link rel="stylesheet" href="../css/base.css">
     <link rel="stylesheet" href="../css/sidebar.css">
     <link rel="stylesheet" href="../css/componentes.css">
@@ -12,12 +12,27 @@
 </head>
 <body>
     <div class="layout">
-        <nav class="sidebar">
+        <header class="mobile-topbar">
+            <button class="btn-abrir-sidebar" id="btn-abrir-sidebar" aria-label="Abrir menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <div class="logo-badge">
+                <img src="../assets/img/grupo-boticario.svg" alt="Logotipo Grupo Boticário">
+            </div>
+            <span class="logo-texto">Manutenção<strong>CGS</strong></span>
+        </header>
+
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+        <nav class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <div class="logo-badge">
                     <img src="../assets/img/grupo-boticario.svg" alt="Logotipo Grupo Boticário">
                 </div>
                 <span class="logo-texto">Manutenção<strong>CGS</strong></span>
+                <button class="btn-fechar-sidebar" id="btn-fechar-sidebar" aria-label="Fechar menu">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
             </div>
 
             <ul class="sidebar-nav">
@@ -151,6 +166,7 @@
     <script src="../js/config.js"></script>
     <script src="../js/api.js"></script>
     <script src="../js/utils.js"></script>
+    <script src="../js/sidebar.js"></script>
     <script src="../js/estoque.js"></script>
 </body>
 </html>

@@ -80,19 +80,87 @@
   background: var(--sidebar-active-bg);
 }
 
+/* Botão fechar (X), visível só dentro do painel mobile */
+.btn-fechar-sidebar {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--sidebar-text);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0.4rem;
+  margin-left: auto;
+}
+
+/* Barra fixa no topo, visível só em mobile, com o botão hambúrguer */
+.mobile-topbar {
+  display: none;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: var(--sidebar-bg);
+  padding: 0.9rem 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 900;
+}
+
+.btn-abrir-sidebar {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.3rem;
+  cursor: pointer;
+  padding: 0.3rem 0.5rem;
+  flex-shrink: 0;
+}
+
+.mobile-topbar .logo-texto {
+  font-size: 0.95rem;
+}
+
+/* Overlay escurecido atrás do painel, some quando fechado */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  z-index: 998;
+}
+.sidebar-overlay.ativo {
+  display: block;
+}
+
 @media (max-width: 860px) {
+  .mobile-topbar {
+    display: flex;
+  }
+
+  .btn-fechar-sidebar {
+    display: block;
+  }
+
   .sidebar {
-    width: 100%;
-    flex-direction: row;
-    align-items: center;
-    overflow-x: auto;
-    padding: 0.75rem 1rem;
-    gap: 1rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 260px;
+    max-width: 80vw;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease-in-out;
+    z-index: 999;
+    overflow-y: auto;
   }
+
+  .sidebar.aberta {
+    transform: translateX(0);
+  }
+
   .sidebar-header {
-    display: none;
+    display: flex;
   }
+
   .sidebar-nav {
-    flex-direction: row;
+    flex-direction: column;
   }
 }
