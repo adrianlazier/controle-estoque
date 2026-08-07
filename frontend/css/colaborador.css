@@ -1,0 +1,55 @@
+.colaborador-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--primary-light);
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  font-size: 0.85rem;
+}
+
+.colaborador-banner-texto {
+  color: var(--text-main);
+}
+
+.colaborador-banner-texto strong {
+  color: var(--primary);
+}
+
+.btn-trocar-colaborador {
+  background: none;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.3rem 0.75rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.btn-trocar-colaborador:hover {
+  background-color: var(--primary);
+  color: #fff;
+}
+
+/* Modal de seleção de colaborador reaproveita .modal/.modal-content já existentes */
+#modal-colaborador .modal-content {
+  max-width: 380px;
+}
+
+#select-colaborador {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: var(--text-main);
+  background-color: #fff;
+  outline: none;
+  margin-bottom: 1rem;
+}
+#select-colaborador:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+}

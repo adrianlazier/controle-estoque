@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estoque — Manutenção CGS</title>
+    <title>Estoque — Controle de Estoque</title>
     <link rel="stylesheet" href="../css/base.css">
     <link rel="stylesheet" href="../css/sidebar.css">
     <link rel="stylesheet" href="../css/componentes.css">
     <link rel="stylesheet" href="../css/views/estoque.css">
+    <link rel="stylesheet" href="../css/colaborador.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 <body>
@@ -48,11 +49,22 @@
                         Estoque
                     </a>
                 </li>
+                <li>
+                    <a href="movimentacao.html" class="sidebar-link">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                        Movimentação
+                    </a>
+                </li>
             </ul>
         </nav>
 
         <div class="conteudo">
             <div id="app-status" class="status-msg" style="display:none;"></div>
+
+            <div class="colaborador-banner">
+                <span class="colaborador-banner-texto">Operando como: <strong id="colaborador-nome-ativo">—</strong></span>
+                <button class="btn-trocar-colaborador" id="btn-trocar-colaborador">Trocar</button>
+            </div>
 
             <div class="estoque">
                 <header class="estoque-header">
@@ -163,10 +175,25 @@
         </div>
     </div>
 
+    <div id="modal-colaborador" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Quem é você?</h2>
+            </div>
+            <select id="select-colaborador">
+                <option value="">Carregando...</option>
+            </select>
+            <div class="modal-actions">
+                <button type="button" class="btn-acao btn-editar" id="btn-confirmar-colaborador" style="width: auto; padding: 0.65rem 1.5rem;">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
     <script src="../js/config.js"></script>
     <script src="../js/api.js"></script>
     <script src="../js/utils.js"></script>
     <script src="../js/sidebar.js"></script>
+    <script src="../js/colaborador.js"></script>
     <script src="../js/estoque.js"></script>
 </body>
 </html>

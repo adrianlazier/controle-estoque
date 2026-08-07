@@ -9,20 +9,12 @@ function validarProduto(body) {
     erros.push("O campo 'descricao' é obrigatório");
   }
 
-  if (
-    quantidade !== undefined &&
-    (isNaN(quantidade) || Number(quantidade) < 0)
-  ) {
+  if (quantidade !== undefined && (isNaN(quantidade) || Number(quantidade) < 0)) {
     erros.push("'quantidade' deve ser um número igual ou maior que zero");
   }
 
-  if (
-    quantidade_minima !== undefined &&
-    (isNaN(quantidade_minima) || Number(quantidade_minima) < 0)
-  ) {
-    erros.push(
-      "'quantidade_minima' deve ser um número igual ou maior que zero"
-    );
+  if (quantidade_minima !== undefined && (isNaN(quantidade_minima) || Number(quantidade_minima) < 0)) {
+    erros.push("'quantidade_minima' deve ser um número igual ou maior que zero");
   }
 
   return erros;
@@ -32,7 +24,7 @@ function validarProduto(body) {
 exports.listarProdutos = async function (req, res) {
   try {
     const [produtos] = await db.execute(
-      'SELECT id, descricao, codigo, quantidade, quantidade_minima, posicao, fabricante, referencia, criado_em FROM produto'
+      'SELECT id, descricao, codigo, quantidade, quantidade_minima, posicao, fabricante, referencia, criado_em, ultima_movimentacao_por, ultima_movimentacao_em FROM produto'
     );
     return res.status(200).json(produtos);
   } catch (error) {
@@ -60,7 +52,7 @@ exports.buscarProdutoPorId = async function (req, res) {
 
   try {
     const [produtos] = await db.execute(
-      'SELECT id, descricao, codigo, quantidade, quantidade_minima, posicao, fabricante, referencia, criado_em FROM produto WHERE id = ?',
+      'SELECT id, descricao, codigo, quantidade, quantidade_minima, posicao, fabricante, referencia, criado_em, ultima_movimentacao_por, ultima_movimentacao_em FROM produto WHERE id = ?',
       [id]
     );
 
@@ -131,29 +123,18 @@ exports.criarProduto = async function (req, res) {
 // PATCH /produtos/:id/movimentar
 exports.movimentarEstoque = async function (req, res) {
   const { id } = req.params;
-  const { tipo, quantidade } = req.body;
+  const { tipo, quantidade, colaborador } = req.body;
 
   if (!['entrada', 'saida'].includes(tipo)) {
-    return res
-      .status(400)
-      .json({ erro: "O campo 'tipo' deve ser 'entrada' ou 'saida'" });
+    return res.status(400).json({ erro: "O campo 'tipo' deve ser 'entrada' ou 'saida'" });
   }
 
-  if (
-    quantidade === undefined ||
-    isNaN(quantidade) ||
-    Number(quantidade) <= 0
-  ) {
-    return res
-      .status(400)
-      .json({ erro: "'quantidade' deve ser um número maior que zero" });
+  if (quantidade === undefined || isNaN(quantidade) || Number(quantidade) <= 0) {
+    return res.status(400).json({ erro: "'quantidade' deve ser um número maior que zero" });
   }
 
   try {
-    const [produtos] = await db.execute(
-      'SELECT quantidade FROM produto WHERE id = ?',
-      [id]
-    );
+    const [produtos] = await db.execute('SELECT quantidade FROM produto WHERE id = ?', [id]);
 
     if (produtos.length === 0) {
       return res.status(404).json({ erro: 'Produto não encontrado.' });
@@ -174,10 +155,17 @@ exports.movimentarEstoque = async function (req, res) {
       }
     }
 
-    await db.execute('UPDATE produto SET quantidade = ? WHERE id = ?', [
-      novaQuantidade,
-      id,
-    ]);
+    // Registra quem fez a movimentação
+    await db.execute(
+      'UPDATE produto SET quantidade = ?, ultima_movimentacao_por = ?, ultima_movimentacao_em = NOW() WHERE id = ?',
+      [novaQuantidade, colaborador || null, id]
+    );
+
+    // Grava no histórico de movimentações
+    await db.execute(
+      'INSERT INTO movimentacao (produto_id, tipo, quantidade, colaborador) VALUES (?, ?, ?, ?)',
+      [id, tipo, valor, colaborador || null]
+    );
 
     return res.status(200).json({
       mensagem: 'Estoque atualizado com sucesso.',
@@ -185,9 +173,7 @@ exports.movimentarEstoque = async function (req, res) {
     });
   } catch (error) {
     console.error('Erro ao movimentar estoque:', error.message);
-    return res
-      .status(500)
-      .json({ erro: 'Erro interno ao movimentar estoque.' });
+    return res.status(500).json({ erro: 'Erro interno ao movimentar estoque.' });
   }
 };
 
@@ -228,14 +214,10 @@ exports.atualizarProduto = async function (req, res) {
     const [resultado] = await db.execute(query, values);
 
     if (resultado.affectedRows === 0) {
-      return res
-        .status(404)
-        .json({ erro: 'Produto não encontrado para atualização.' });
+      return res.status(404).json({ erro: 'Produto não encontrado para atualização.' });
     }
 
-    return res
-      .status(200)
-      .json({ mensagem: 'Produto atualizado com sucesso.' });
+    return res.status(200).json({ mensagem: 'Produto atualizado com sucesso.' });
   } catch (error) {
     console.error('Erro ao atualizar produto:', error.message);
     return res.status(500).json({ erro: 'Erro interno ao atualizar produto.' });
@@ -247,14 +229,10 @@ exports.deletarProduto = async function (req, res) {
   const { id } = req.params;
 
   try {
-    const [resultado] = await db.execute('DELETE FROM produto WHERE id = ?', [
-      id,
-    ]);
+    const [resultado] = await db.execute('DELETE FROM produto WHERE id = ?', [id]);
 
     if (resultado.affectedRows === 0) {
-      return res
-        .status(404)
-        .json({ erro: 'Produto não encontrado para exclusão.' });
+      return res.status(404).json({ erro: 'Produto não encontrado para exclusão.' });
     }
 
     return res.status(200).json({ mensagem: 'Produto removido com sucesso.' });

@@ -68,9 +68,9 @@ body {
   }
 }
 
-
 .dashboard,
-.estoque {
+.estoque,
+.movimentacao {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;

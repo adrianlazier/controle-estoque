@@ -9,7 +9,12 @@ app.use(cors());
 app.use(express.json());
 
 const produtoRoutes = require('./routes/produtoRoutes');
+const colaboradorRoutes = require('./routes/colaboradorRoutes');
+const movimentacaoRoutes = require('./routes/movimentacaoRoutes');
+
 app.use('/produtos', produtoRoutes);
+app.use('/colaboradores', colaboradorRoutes);
+app.use('/movimentacoes', movimentacaoRoutes);
 
 async function testarConexao() {
   try {

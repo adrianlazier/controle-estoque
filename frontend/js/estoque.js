@@ -34,7 +34,7 @@ function renderizarTabela(lista) {
       <td>${escapeHTML(produto.quantidade_minima)}</td>
       <td>${escapeHTML(produto.posicao) || '-'}</td>
       <td>${escapeHTML(produto.fabricante) || '-'}</td>
-      <td>${escapeHTML(produto.referencia) || '-'}</td>
+      <td>${escapeHTML(produto.referencia)}</td>
       <td class="acoes">
           <div class="acoes-movimentacao">
               <button class="btn-mov btn-entrada" data-acao="entrada" data-id="${produto.id}" title="Entrada de estoque">+</button>
@@ -107,8 +107,15 @@ async function movimentarProduto(id, tipo) {
     return;
   }
 
+  const colaboradorAtivo = obterColaboradorAtivo();
+  if (!colaboradorAtivo) {
+    alert('Selecione quem está operando antes de continuar (botão "Trocar" no topo).');
+    abrirModalColaborador();
+    return;
+  }
+
   try {
-    const resposta = await movimentarEstoque(id, tipo, valor);
+    const resposta = await movimentarEstoque(id, tipo, valor, colaboradorAtivo.nome);
     if (resposta.ok) {
       carregarProdutos();
     } else {

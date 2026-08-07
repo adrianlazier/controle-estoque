@@ -38,9 +38,30 @@ async function deletarProduto(id) {
   return apiFetch(`/${id}`, { method: 'DELETE' });
 }
 
-async function movimentarEstoque(id, tipo, quantidade) {
+async function movimentarEstoque(id, tipo, quantidade, colaborador) {
   return apiFetch(`/${id}/movimentar`, {
     method: 'PATCH',
-    body: JSON.stringify({ tipo, quantidade }),
+    body: JSON.stringify({ tipo, quantidade, colaborador }),
   });
+}
+
+async function apiFetchColaboradores(caminho = '', opcoes = {}) {
+  const headers = {
+    'Content-Type': 'application/json',
+    ...opcoes.headers,
+  };
+  const resposta = await fetch(`${URL_BASE}/colaboradores${caminho}`, { ...opcoes, headers });
+  return resposta;
+}
+
+async function buscarColaboradores() {
+  const resposta = await apiFetchColaboradores('');
+  if (!resposta.ok) throw new Error('Erro ao buscar colaboradores');
+  return resposta.json();
+}
+
+async function buscarMovimentacoes() {
+  const resposta = await fetch(`${URL_BASE}/movimentacoes`);
+  if (!resposta.ok) throw new Error('Erro ao buscar movimentações');
+  return resposta.json();
 }
