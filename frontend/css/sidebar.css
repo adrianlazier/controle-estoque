@@ -1,0 +1,166 @@
+.sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  background-color: var(--sidebar-bg);
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 1rem;
+  gap: 2rem;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0 0.5rem;
+}
+
+.logo-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.logo-badge img {
+  width: 26px;
+  height: 26px;
+}
+
+.logo-texto {
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.logo-texto strong {
+  color: #93c5fd;
+  font-weight: 700;
+}
+
+.sidebar-nav {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 8px;
+  color: var(--sidebar-text);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.sidebar-link i {
+  width: 18px;
+  font-size: 1rem;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.sidebar-link:hover {
+  color: var(--sidebar-text-hover);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* Página atual: adicionada manualmente no HTML de cada página (sem JS) */
+.sidebar-link.ativo {
+  color: #fff;
+  background: var(--sidebar-active-bg);
+}
+
+/* Botão fechar (X), visível só dentro do painel mobile */
+.btn-fechar-sidebar {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--sidebar-text);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0.4rem;
+  margin-left: auto;
+}
+
+/* Barra fixa no topo, visível só em mobile, com o botão hambúrguer */
+.mobile-topbar {
+  display: none;
+  align-items: center;
+  gap: 0.75rem;
+  background-color: var(--sidebar-bg);
+  padding: 0.9rem 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 900;
+}
+
+.btn-abrir-sidebar {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.3rem;
+  cursor: pointer;
+  padding: 0.3rem 0.5rem;
+  flex-shrink: 0;
+}
+
+.mobile-topbar .logo-texto {
+  font-size: 0.95rem;
+}
+
+/* Overlay escurecido atrás do painel, some quando fechado */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  z-index: 998;
+}
+.sidebar-overlay.ativo {
+  display: block;
+}
+
+@media (max-width: 860px) {
+  .mobile-topbar {
+    display: flex;
+  }
+
+  .btn-fechar-sidebar {
+    display: block;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 260px;
+    max-width: 80vw;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease-in-out;
+    z-index: 999;
+    overflow-y: auto;
+  }
+
+  .sidebar.aberta {
+    transform: translateX(0);
+  }
+
+  .sidebar-header {
+    display: flex;
+  }
+
+  .sidebar-nav {
+    flex-direction: column;
+  }
+}

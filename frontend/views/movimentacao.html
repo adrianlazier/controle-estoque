@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movimentações — Manutenção CGS</title>
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/sidebar.css">
+    <link rel="stylesheet" href="../css/componentes.css">
+    <link rel="stylesheet" href="../css/views/movimentacao.css">
+    <link rel="stylesheet" href="../css/colaborador.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+    <div class="layout">
+        <header class="mobile-topbar">
+            <button class="btn-abrir-sidebar" id="btn-abrir-sidebar" aria-label="Abrir menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <div class="logo-badge">
+                <img src="../assets/img/grupo-boticario.svg" alt="Logotipo Grupo Boticário">
+            </div>
+            <span class="logo-texto">Manutenção<strong>CGS</strong></span>
+        </header>
+
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-badge">
+                    <img src="../assets/img/grupo-boticario.svg" alt="Logotipo Grupo Boticário">
+                </div>
+                <span class="logo-texto">Manutenção<strong>CGS</strong></span>
+                <button class="btn-fechar-sidebar" id="btn-fechar-sidebar" aria-label="Fechar menu">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <ul class="sidebar-nav">
+                <li>
+                    <a href="dashboard.html" class="sidebar-link">
+                        <i class="fa-solid fa-gauge"></i>
+                        Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="estoque.html" class="sidebar-link">
+                        <i class="fa-solid fa-boxes-stacked"></i>
+                        Estoque
+                    </a>
+                </li>
+                <li>
+                    <a href="movimentacao.html" class="sidebar-link ativo">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                        Movimentação
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="conteudo">
+            <div id="app-status" class="status-msg" style="display:none;"></div>
+
+            <div class="colaborador-banner">
+                <span class="colaborador-banner-texto">Operando como: <strong id="colaborador-nome-ativo">—</strong></span>
+                <button class="btn-trocar-colaborador" id="btn-trocar-colaborador">Trocar</button>
+            </div>
+
+            <div class="movimentacao">
+                <header class="movimentacao-header">
+                    <h1>Movimentações</h1>
+                    <p class="dashboard-subtitulo">Histórico de entradas e saídas de peças</p>
+                </header>
+
+                <div class="filtros-movimentacao">
+                    <button class="filtro-tab ativo" data-filtro="todas">Todas</button>
+                    <button class="filtro-tab" data-filtro="entrada">Entradas</button>
+                    <button class="filtro-tab" data-filtro="saida">Saídas</button>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Data/Hora</th>
+                                <th>Produto</th>
+                                <th>Cód. SAP</th>
+                                <th>Tipo</th>
+                                <th>Quantidade</th>
+                                <th>Colaborador</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabela-movimentacoes"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-colaborador" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Quem é você?</h2>
+            </div>
+            <select id="select-colaborador">
+                <option value="">Carregando...</option>
+            </select>
+            <div class="modal-actions">
+                <button type="button" class="btn-acao btn-editar" id="btn-confirmar-colaborador" style="width: auto; padding: 0.65rem 1.5rem;">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/sidebar.js"></script>
+    <script src="../js/colaborador.js"></script>
+    <script src="../js/movimentacao.js"></script>
+</body>
+</html>
