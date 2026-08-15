@@ -1,0 +1,208 @@
+.movimentar-header h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.movimentar-card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.75rem;
+  max-width: 520px;
+}
+
+/* Busca de produto */
+.movimentar-produto-busca {
+  position: relative;
+  margin-bottom: 1.25rem;
+}
+
+.movimentar-produto-busca label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+
+#busca-produto {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: var(--transition);
+}
+#busca-produto:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+}
+
+.resultados-busca {
+  display: none;
+  position: absolute;
+  top: calc(100% + 0.4rem);
+  left: 0;
+  right: 0;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+  max-height: 280px;
+  overflow-y: auto;
+  z-index: 50;
+}
+.resultados-busca.ativo { display: block; }
+
+.resultado-item {
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.7rem 1rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.resultado-item:last-child { border-bottom: none; }
+.resultado-item:hover { background-color: var(--primary-light); }
+.resultado-item-descricao { font-weight: 600; font-size: 0.9rem; color: var(--text-main); }
+.resultado-item-detalhes { font-size: 0.78rem; color: var(--text-muted); }
+
+.resultados-vazio {
+  padding: 0.9rem 1rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Card do produto selecionado */
+.produto-selecionado-card {
+  display: none;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  background: var(--primary-light);
+  border: 1px solid #bfdbfe;
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.produto-selecionado-info { display: flex; flex-direction: column; gap: 0.2rem; }
+.produto-selecionado-descricao { font-weight: 700; font-size: 1rem; color: var(--text-main); }
+.produto-selecionado-detalhes { font-size: 0.8rem; color: var(--text-muted); }
+
+.produto-selecionado-quantidade-atual {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-align: right;
+  white-space: nowrap;
+}
+.produto-selecionado-quantidade-atual strong {
+  font-size: 1.3rem;
+  color: var(--primary);
+  display: block;
+}
+
+/* Formulário de movimentação — usado tanto nas telas dedicadas
+   (#form-movimentacao) quanto no modal aberto pelos botões +/- do Estoque
+   (#form-modal-movimentar). Sem o gap aqui, o margin-top negativo dos
+   botões rápidos abaixo faz eles sobrepor o campo de quantidade. */
+#form-movimentacao,
+#form-modal-movimentar {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+#form-movimentacao {
+  display: none;
+}
+
+.quick-qtd-buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: -0.5rem;
+}
+.quick-qtd-buttons button {
+  flex: 1;
+  padding: 0.5rem 0;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.quick-qtd-buttons button:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.aviso-movimentacao {
+  display: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.65rem 0.9rem;
+  border-radius: 8px;
+}
+.aviso-alerta {
+  display: block;
+  background: var(--warning-bg);
+  color: var(--warning);
+  border: 1px solid var(--warning-border);
+}
+.aviso-erro {
+  display: block;
+  background: var(--danger-bg);
+  color: var(--danger);
+  border: 1px solid var(--danger-border);
+}
+
+.btn-entrada-full {
+  background-color: var(--success);
+}
+.btn-entrada-full:hover { background-color: #15803d; }
+
+.btn-saida-full {
+  background-color: var(--warning);
+}
+.btn-saida-full:hover { background-color: #c2410c; }
+
+/* Botões de confirmação do modal de movimentação (tamanho de modal-actions) */
+.btn-confirmar-entrada {
+  background-color: var(--success);
+  color: #fff;
+  border: 1px solid var(--success);
+}
+.btn-confirmar-entrada:hover { background-color: #15803d; }
+
+.btn-confirmar-saida {
+  background-color: var(--warning);
+  color: #fff;
+  border: 1px solid var(--warning);
+}
+.btn-confirmar-saida:hover { background-color: #c2410c; }
+.btn-confirmar-saida:disabled,
+.btn-confirmar-entrada:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.mensagem-sucesso {
+  display: none;
+  background: var(--success-bg);
+  color: var(--success);
+  border: 1px solid var(--success-border);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+}

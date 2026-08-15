@@ -70,7 +70,9 @@ body {
 
 .dashboard,
 .estoque,
-.movimentacao {
+.movimentacao,
+.adicionar,
+.retirar {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;

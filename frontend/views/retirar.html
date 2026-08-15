@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard — Manutenção CGS</title>
+    <title>Retirar Peça — Manutenção CGS</title>
     <link rel="stylesheet" href="../css/base.css">
     <link rel="stylesheet" href="../css/sidebar.css">
     <link rel="stylesheet" href="../css/componentes.css">
-    <link rel="stylesheet" href="../css/views/dashboard.css">
+    <link rel="stylesheet" href="../css/views/movimentar.css">
     <link rel="stylesheet" href="../css/colaborador.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
@@ -38,7 +38,7 @@
 
             <ul class="sidebar-nav">
                 <li>
-                    <a href="dashboard.html" class="sidebar-link ativo">
+                    <a href="dashboard.html" class="sidebar-link">
                         <i class="fa-solid fa-gauge"></i>
                         Dashboard
                     </a>
@@ -56,7 +56,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="retirar.html" class="sidebar-link">
+                    <a href="retirar.html" class="sidebar-link ativo">
                         <i class="fa-solid fa-square-minus"></i>
                         Retirar
                     </a>
@@ -78,68 +78,51 @@
                 <button class="btn-trocar-colaborador" id="btn-trocar-colaborador">Trocar</button>
             </div>
 
-            <div class="dashboard">
-                <header class="dashboard-header">
-                    <h1>Dashboard</h1>
-                    <p class="dashboard-subtitulo">Visão geral do estoque de peças</p>
+            <div class="retirar">
+                <header class="movimentar-header">
+                    <h1>Retirar Peça</h1>
+                    <p class="dashboard-subtitulo">Registrar saída de peças do estoque</p>
                 </header>
 
-                <section class="saude-estoque">
-                    <div class="saude-estoque-topo">
-                        <span>Saúde do estoque</span>
-                        <span id="saude-estoque-percentual">--</span>
+                <div class="movimentar-card">
+                    <div class="movimentar-produto-busca">
+                        <label for="busca-produto">Buscar produto:</label>
+                        <input type="text" id="busca-produto" placeholder="Digite descrição, código ou posição...">
+                        <div id="resultados-busca" class="resultados-busca"></div>
                     </div>
-                    <div class="saude-barra">
-                        <div id="saude-barra-ok" class="saude-segmento saude-ok" style="width: 0%"></div>
-                        <div id="saude-barra-baixo" class="saude-segmento saude-baixo" style="width: 0%"></div>
-                    </div>
-                    <div class="saude-legenda">
-                        <span><i class="legenda-cor legenda-ok"></i> Dentro do mínimo</span>
-                        <span><i class="legenda-cor legenda-baixo"></i> Abaixo do mínimo</span>
-                    </div>
-                </section>
 
-                <section class="cards-grid">
-                    <div class="card-insight">
-                        <div class="card-icone icone-azul">
-                            <i class="fa-solid fa-boxes-stacked"></i>
+                    <div class="produto-selecionado-card" id="produto-selecionado-card">
+                        <div class="produto-selecionado-info">
+                            <span class="produto-selecionado-descricao" id="ps-descricao"></span>
+                            <span class="produto-selecionado-detalhes" id="ps-detalhes"></span>
                         </div>
-                        <div>
-                            <span class="card-numero" id="total-itens">--</span>
-                            <span class="card-label">Itens cadastrados</span>
+                        <div class="produto-selecionado-quantidade-atual">
+                            Qtd. atual
+                            <strong id="ps-quantidade-atual">--</strong>
                         </div>
                     </div>
 
-                    <div class="card-insight">
-                        <div class="card-icone icone-vermelho">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
+                    <form id="form-movimentacao">
+                        <div class="form-group">
+                            <label for="quantidade-movimentar">Quantidade a retirar:</label>
+                            <input type="number" id="quantidade-movimentar" min="1" required>
                         </div>
-                        <div>
-                            <span class="card-numero" id="total-abaixo-minimo">--</span>
-                            <span class="card-label">Abaixo do mínimo</span>
-                        </div>
-                    </div>
 
-                    <div class="card-insight">
-                        <div class="card-icone icone-verde">
-                            <i class="fa-solid fa-layer-group"></i>
+                        <div class="quick-qtd-buttons">
+                            <button type="button" data-qtd="1">+1</button>
+                            <button type="button" data-qtd="5">+5</button>
+                            <button type="button" data-qtd="10">+10</button>
                         </div>
-                        <div>
-                            <span class="card-numero" id="total-pecas-estoque">--</span>
-                            <span class="card-label">Peças em estoque (unidades)</span>
-                        </div>
-                    </div>
-                </section>
 
-                <section class="alerta-lista">
-                    <div class="alerta-lista-header">
-                        <h2>Itens que precisam de atenção</h2>
-                        <a href="estoque.html" class="link-ver-todos">Ver estoque completo →</a>
-                    </div>
-                    <div id="alerta-lista-corpo">
-                        <p class="carregando-view">Carregando...</p>
-                    </div>
-                </section>
+                        <div id="aviso-movimentacao" class="aviso-movimentacao"></div>
+
+                        <button type="submit" id="btn-confirmar-movimentacao" class="btn-primario btn-saida-full">
+                            Registrar saída
+                        </button>
+                    </form>
+
+                    <div id="mensagem-sucesso" class="mensagem-sucesso"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -163,6 +146,7 @@
     <script src="../js/utils.js"></script>
     <script src="../js/sidebar.js"></script>
     <script src="../js/colaborador.js"></script>
-    <script src="../js/dashboard.js"></script>
+    <script src="../js/produto-busca.js"></script>
+    <script src="../js/retirar.js"></script>
 </body>
 </html>

@@ -42,6 +42,11 @@
   box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
 }
 
+.campo-obrigatorio {
+  color: var(--danger);
+  font-weight: 700;
+}
+
 /* ==========================================================================
    BOTÕES
    ========================================================================== */
@@ -185,7 +190,7 @@ tbody tr.estoque-baixo td { color: var(--danger); }
   border-radius: 16px;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 580px;
+  max-width: 580px;      
   border: 1px solid var(--border-color);
   animation: modalSuave 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -230,3 +235,14 @@ tbody tr.estoque-baixo td { color: var(--danger); }
   border-top: 1px solid var(--border-color);
 }
 .modal-actions button { padding: 0.65rem 1.25rem; font-size: 0.9rem; border-radius: 8px; }
+
+#form-editar-produto {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+#form-editar-produto label[for="edit-descricao"],
+#form-editar-produto #edit-descricao {
+  grid-column: 1 / -1;
+}

@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estoque — Controle de Estoque</title>
+    <title>Estoque — Manutenção CGS</title>
     <link rel="stylesheet" href="../css/base.css">
     <link rel="stylesheet" href="../css/sidebar.css">
     <link rel="stylesheet" href="../css/componentes.css">
     <link rel="stylesheet" href="../css/views/estoque.css">
+    <link rel="stylesheet" href="../css/views/movimentar.css">
     <link rel="stylesheet" href="../css/colaborador.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
@@ -50,6 +51,18 @@
                     </a>
                 </li>
                 <li>
+                    <a href="adicionar.html" class="sidebar-link">
+                        <i class="fa-solid fa-square-plus"></i>
+                        Adicionar
+                    </a>
+                </li>
+                <li>
+                    <a href="retirar.html" class="sidebar-link">
+                        <i class="fa-solid fa-square-minus"></i>
+                        Retirar
+                    </a>
+                </li>
+                <li>
                     <a href="movimentacao.html" class="sidebar-link">
                         <i class="fa-solid fa-clock-rotate-left"></i>
                         Movimentação
@@ -74,8 +87,8 @@
 
                 <form id="form-produto">
                     <div class="form-group">
-                        <label for="descricao">Descrição:</label>
-                        <input type="text" name="descricao" id="descricao" placeholder="Ex: Rolamento">
+                        <label for="descricao">Descrição: <span class="campo-obrigatorio">*</span></label>
+                        <input type="text" name="descricao" id="descricao" placeholder="Ex: Rolamento" required>
                     </div>
                     <div class="form-group">
                         <label for="codigo">Código SAP:</label>
@@ -140,7 +153,7 @@
             <form id="form-editar-produto">
                 <input type="hidden" id="edit-id">
                 <div class="form-group">
-                    <label for="edit-descricao">Descrição:</label>
+                    <label for="edit-descricao">Descrição: <span class="campo-obrigatorio">*</span></label>
                     <input type="text" id="edit-descricao" required>
                 </div>
                 <div class="form-group">
@@ -170,6 +183,46 @@
                 <div class="modal-actions">
                     <button type="button" class="btn-acao btn-deletar" id="btn-cancelar-modal">Cancelar</button>
                     <button type="submit" class="btn-acao btn-editar">Salvar Alterações</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-movimentar" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-movimentar-titulo">Movimentar Estoque</h2>
+                <button type="button" class="btn-fechar" id="btn-fechar-modal-movimentar">&times;</button>
+            </div>
+
+            <div class="produto-selecionado-card" style="display:flex;">
+                <div class="produto-selecionado-info">
+                    <span class="produto-selecionado-descricao" id="mov-descricao"></span>
+                    <span class="produto-selecionado-detalhes" id="mov-detalhes"></span>
+                </div>
+                <div class="produto-selecionado-quantidade-atual">
+                    Qtd. atual
+                    <strong id="mov-quantidade-atual">--</strong>
+                </div>
+            </div>
+
+            <form id="form-modal-movimentar">
+                <div class="form-group">
+                    <label for="mov-quantidade" id="mov-quantidade-label">Quantidade:</label>
+                    <input type="number" id="mov-quantidade" min="1" required>
+                </div>
+
+                <div class="quick-qtd-buttons">
+                    <button type="button" data-qtd="1">+1</button>
+                    <button type="button" data-qtd="5">+5</button>
+                    <button type="button" data-qtd="10">+10</button>
+                </div>
+
+                <div id="mov-aviso" class="aviso-movimentacao"></div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn-acao btn-deletar" id="btn-cancelar-modal-movimentar">Cancelar</button>
+                    <button type="submit" class="btn-acao" id="btn-confirmar-modal-movimentar">Confirmar</button>
                 </div>
             </form>
         </div>

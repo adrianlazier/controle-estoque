@@ -96,27 +96,122 @@ async function excluirProduto(id) {
   }
 }
 
-async function movimentarProduto(id, tipo) {
-  const acao = tipo === 'entrada' ? 'adicionar' : 'retirar';
-  const quantidade = prompt(`Quantidade a ${acao}:`);
-  if (quantidade === null) return;
 
-  const valor = Number(quantidade);
+const modalMovimentar = document.getElementById('modal-movimentar');
+const formModalMovimentar = document.getElementById('form-modal-movimentar');
+const inputMovQuantidade = document.getElementById('mov-quantidade');
+const avisoMov = document.getElementById('mov-aviso');
+const btnConfirmarMov = document.getElementById('btn-confirmar-modal-movimentar');
+const btnCancelarMov = document.getElementById('btn-cancelar-modal-movimentar');
+const btnFecharMov = document.getElementById('btn-fechar-modal-movimentar');
+
+let movProdutoAtual = null;
+let movTipoAtual = null;
+
+function fecharModalMovimentar() {
+  modalMovimentar.classList.remove('ativo');
+  formModalMovimentar.reset();
+  avisoMov.style.display = 'none';
+  movProdutoAtual = null;
+  movTipoAtual = null;
+}
+
+function abrirModalMovimentar(produto, tipo) {
+  movProdutoAtual = produto;
+  movTipoAtual = tipo;
+  const ehEntrada = tipo === 'entrada';
+
+  document.getElementById('modal-movimentar-titulo').textContent =
+    ehEntrada ? 'Adicionar ao Estoque' : 'Retirar do Estoque';
+  document.getElementById('mov-descricao').textContent = produto.descricao;
+  document.getElementById('mov-detalhes').textContent =
+    `${produto.codigo || 'sem código'} · ${produto.posicao || 'sem posição'}`;
+  document.getElementById('mov-quantidade-atual').textContent = produto.quantidade;
+  document.getElementById('mov-quantidade-label').textContent =
+    ehEntrada ? 'Quantidade a adicionar:' : 'Quantidade a retirar:';
+
+  btnConfirmarMov.textContent = ehEntrada ? 'Registrar entrada' : 'Registrar saída';
+  btnConfirmarMov.className = `btn-acao ${ehEntrada ? 'btn-confirmar-entrada' : 'btn-confirmar-saida'}`;
+  btnConfirmarMov.disabled = false;
+
+  inputMovQuantidade.value = '';
+  avisoMov.style.display = 'none';
+
+  modalMovimentar.classList.add('ativo');
+  inputMovQuantidade.focus();
+}
+
+function verificarAvisoModalMov() {
+  if (!movProdutoAtual || movTipoAtual !== 'saida') {
+    avisoMov.style.display = 'none';
+    btnConfirmarMov.disabled = false;
+    return;
+  }
+
+  const valor = Number(inputMovQuantidade.value) || 0;
+
+  if (valor <= 0) {
+    avisoMov.style.display = 'none';
+    btnConfirmarMov.disabled = false;
+    return;
+  }
+
+  if (valor > movProdutoAtual.quantidade) {
+    avisoMov.textContent = `Estoque insuficiente. Disponível: ${movProdutoAtual.quantidade}.`;
+    avisoMov.className = 'aviso-movimentacao aviso-erro';
+    btnConfirmarMov.disabled = true;
+    return;
+  }
+
+  if (movProdutoAtual.quantidade - valor <= movProdutoAtual.quantidade_minima) {
+    avisoMov.textContent = `Atenção: isso vai deixar o estoque abaixo do mínimo (${movProdutoAtual.quantidade_minima}).`;
+    avisoMov.className = 'aviso-movimentacao aviso-alerta';
+    btnConfirmarMov.disabled = false;
+    return;
+  }
+
+  avisoMov.style.display = 'none';
+  btnConfirmarMov.disabled = false;
+}
+
+inputMovQuantidade.addEventListener('input', verificarAvisoModalMov);
+
+document.querySelectorAll('#form-modal-movimentar .quick-qtd-buttons button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const atual = Number(inputMovQuantidade.value) || 0;
+    inputMovQuantidade.value = atual + Number(btn.dataset.qtd);
+    verificarAvisoModalMov();
+  });
+});
+
+btnCancelarMov.addEventListener('click', fecharModalMovimentar);
+btnFecharMov.addEventListener('click', fecharModalMovimentar);
+modalMovimentar.addEventListener('click', (e) => {
+  if (e.target === modalMovimentar) fecharModalMovimentar();
+});
+
+formModalMovimentar.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!movProdutoAtual || !movTipoAtual) return;
+
+  const valor = Number(inputMovQuantidade.value);
   if (isNaN(valor) || valor <= 0) {
-    alert('Informe um número válido maior que zero.');
+    alert('Informe uma quantidade válida.');
     return;
   }
 
   const colaboradorAtivo = obterColaboradorAtivo();
   if (!colaboradorAtivo) {
+    fecharModalMovimentar();
     alert('Selecione quem está operando antes de continuar (botão "Trocar" no topo).');
     abrirModalColaborador();
     return;
   }
 
   try {
-    const resposta = await movimentarEstoque(id, tipo, valor, colaboradorAtivo.nome);
+    const resposta = await movimentarEstoque(movProdutoAtual.id, movTipoAtual, valor, colaboradorAtivo.nome);
     if (resposta.ok) {
+      fecharModalMovimentar();
       carregarProdutos();
     } else {
       const erro = await resposta.json();
@@ -125,6 +220,16 @@ async function movimentarProduto(id, tipo) {
   } catch (error) {
     console.error('Erro ao movimentar estoque:', error);
     alert('Erro ao conectar com o servidor.');
+  }
+});
+
+async function movimentarProduto(id, tipo) {
+  try {
+    const produto = await buscarProdutoPorId(id);
+    abrirModalMovimentar(produto, tipo);
+  } catch (error) {
+    console.error('Erro ao buscar produto:', error);
+    alert('Erro ao carregar os dados do produto.');
   }
 }
 
